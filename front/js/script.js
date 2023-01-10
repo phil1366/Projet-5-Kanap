@@ -7,7 +7,7 @@ const display = (produit) => {
 
     let article = document.createElement('article');
 
-    let img = document.createElement('img');
+    let img = document.createElement('img'); 
     img.setAttribute('src',`${produit.imageUrl}`);
     img.setAttribute('alt',`${produit.altTxt}`);
 
