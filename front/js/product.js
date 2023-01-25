@@ -21,9 +21,7 @@
               option.textContent = color;
     
               select.appendChild(option);
-            }
-    
-    
+            }        
           };
           
           const fetchProduct = (productId) => {
@@ -42,13 +40,33 @@
           const productId = searchParams.get("id");    
     
       fetchProduct(productId);
-    
-    
-    
-      // aassocier un eventlisner pour le bouton Ajouter sur le panier
-      
-      // losqu on click il doit
-    
-      //recuper le id Kanape , la coleur et la Quantité
-    
-      //stocker ces info dans le local storage
+   
+    //Ajouter des produits dans le panier
+
+// ECOUTE EVENEMENT AU CLICK + FNCT AjouterProdPanier
+
+document.getElementById('addToCart').addEventListener('click',  function () {AjouterProdPanier()});
+
+const AjouterProdPanier  = () => {
+
+ // récuperer la qté et la couleur
+ let quantity = parseInt(document.getElementById('quantity').value); 
+ let colorSelect = document.getElementById("colors");
+ let color = colorSelect.options[colorSelect.selectedIndex].value;
+
+ // créér l'objet nouvel achat
+ let newAchat = {
+  "_id" : productId,
+  "quantity" : quantity,
+  "color" : color,
+}
+
+
+//RECUPERER LE PANIER// grace condition ternaire : let variable=(condition)? "valeur si vrai": "valeur si faux"
+//let panier = (1==3) ? val1 : val2;
+let panier = localStorage.getItem('panierStorage') ? JSON.parse(localStorage.getItem('panierStorage')) : [];
+
+panier.push(newAchat);
+
+localStorage.setItem('panierStorage', JSON.stringify(panier));
+}
