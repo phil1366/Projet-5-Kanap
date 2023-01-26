@@ -19,9 +19,10 @@ fetch("http://localhost:3000/api/products")
         for (let element of listeProduct) {                    
             affichage(element);
         }
-    })
-    
+    })    
+
+//si erreur    
     .catch(function (err) {
         console.log("fetch Error")
-        alert("Veuillez nous exuser les produits ne sont pas disponible pour le moment ")
+        alert("Veuillez nous excuser : produits indisponible pour le moment")
     });
