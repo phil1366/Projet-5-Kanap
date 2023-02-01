@@ -1,4 +1,10 @@
-     const displayProduct = (product) => {  
+jaber sirraj
+	
+10:50 (il y a 2 heures)
+	
+À moi
+     
+const displayProduct = (product) => {  
 
       // Sélectionne l'élément avec l'ID "title" pour mettre à jour son contenu avec le nom du produit
             const title = document.getElementById("title");
@@ -32,15 +38,11 @@
       // fonction pour récupérer les détails du produit en utilisant l'ID de produit et l'API fetch    
           const fetchProduct = (productId) => {
             fetch(`http://localhost:3000/api/products/${productId}`)
-              .then(response => response.json())
-
-      // Affiche les détails du produit en utilisant la fonction displayProduct
-              .then(product => {
+              .then(response => response.json())      
+              .then(product => { // Affiche les détails du produit en utilisant la fonction displayProduct
                 displayProduct(product);
-              })
-
-      // Affiche une alerte en cas d'erreur       
-              .catch(error => {
+              })           
+              .catch(error => {// Affiche une alerte en cas d'erreur  
                 console.log(error);
                 alert("Veuillez nous exuser ce produit n'est pas disponible pour le moment ");
               });
@@ -54,33 +56,65 @@
     
       // Appelle la fonction fetchProduct en passant l'ID de produit récupéré pour récupérer les détails du produit
       fetchProduct(productId);
+
+
+
    
-      //Ajouter des produits dans le panier
+      //Étape 7 : Ajouter des produits dans le panier
 
       // ECOUTE EVENEMENT AU CLICK + FNCT AjouterProdPanier
 
     document.getElementById('addToCart').addEventListener('click',  function () {AjouterProdPanier()});
 
-    const AjouterProdPanier  = () => {
+    const AjouterProdPanier  = () => { //fonction d'ajout du produit dans le panier
 
-      // récuperer la qté et la couleur
-    let quantity = parseInt(document.getElementById('quantity').value); 
-    let colorSelect = document.getElementById("colors");
-    let color = colorSelect.options[colorSelect.selectedIndex].value;
+            // récuperer la qté et la couleur
+          let quantity = parseInt(document.getElementById('quantity').value);// parseInt permet de convertir string en entier
+          
+          let colorSelect = document.getElementById("colors");
+          let color = colorSelect.options[colorSelect.selectedIndex].value;
 
-      // créér l'objet nouvel achat
-    let newAchat = {
-        "_id" : productId,
-        "quantity" : quantity,
-        "color" : color,
-    }
+          // créér l'objet nouvel achat
+          let newAchat = {
+              "_id" : productId,
+              "quantity" : quantity,
+              "color" : color,
+          }
 
 
-//RECUPERER LE PANIER// grace condition ternaire : let variable=(condition)? "valeur si vrai": "valeur si faux"
-//let panier = (1==3) ? val1 : val2;
-let panier = localStorage.getItem('panierStorage') ? JSON.parse(localStorage.getItem('panierStorage')) : [];
+          //RECUPERER LE PANIER// grace condition ternaire : let variable=(condition)? "valeur si vrai": "valeur si faux"
+          //let panier = (1==3) ? val1 : val2;
+          let panier = localStorage.getItem('panierStorage') ? JSON.parse(localStorage.getItem('panierStorage')) : [];     
+                
+          //gestion de l'ajout selon si le produit exist ou pas sur le panier
 
-panier.push(newAchat);
+          // -> parcourir le panier pour voir si le produit existe
+          let isExist = -1 ;
 
-localStorage.setItem('panierStorage', JSON.stringify(panier));
-}
+          for (let i = 0; i < panier.length; i++) {           
+            
+                  if (panier[i]._id === newAchat._id && panier[i].color === newAchat.color ) {
+                        isExist = i;
+                  }
+           };
+
+          // -> selon la resultat : si le produit existe on va modifier la quantie sion on ajoute une nouvelle ligne sur le panier
+          if ( isExist !== -1 ) {
+            panier[isExist].quantity = panier[isExist].quantity + newAchat.quantity; // on change la qté
+          } 
+          else {
+            panier.push(newAchat); // on ajoute une nouvelle ligne
+          };
+
+      localStorage.setItem('panierStorage', JSON.stringify(panier)); // mise a jour du local storage
+      location.replace("/front/html/cart.html"); // redirection vers la page panier
+
+
+    
+
+
+
+
+
+
+
