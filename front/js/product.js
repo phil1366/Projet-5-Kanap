@@ -1,9 +1,6 @@
-jaber sirraj
-	
-10:50 (il y a 2 heures)
-	
-À moi
-     
+const { response } = require("../../back/app");
+
+  
 const displayProduct = (product) => {  
 
       // Sélectionne l'élément avec l'ID "title" pour mettre à jour son contenu avec le nom du produit
@@ -57,8 +54,6 @@ const displayProduct = (product) => {
       // Appelle la fonction fetchProduct en passant l'ID de produit récupéré pour récupérer les détails du produit
       fetchProduct(productId);
 
-
-
    
       //Étape 7 : Ajouter des produits dans le panier
 
@@ -98,7 +93,7 @@ const displayProduct = (product) => {
                   }
            };
 
-          // -> selon la resultat : si le produit existe on va modifier la quantie sion on ajoute une nouvelle ligne sur le panier
+          // -> selon la resultat : si le produit existe on va modifier la quantité sinon on ajoute une nouvelle ligne sur le panier
           if ( isExist !== -1 ) {
             panier[isExist].quantity = panier[isExist].quantity + newAchat.quantity; // on change la qté
           } 
@@ -106,15 +101,12 @@ const displayProduct = (product) => {
             panier.push(newAchat); // on ajoute une nouvelle ligne
           };
 
-      localStorage.setItem('panierStorage', JSON.stringify(panier)); // mise a jour du local storage
+      localStorage.setItem('panierStorage', JSON.stringify(panier)); // mise à jour du local storage
       location.replace("/front/html/cart.html"); // redirection vers la page panier
 
+      }
 
+        
+
+      
     
-
-
-
-
-
-
-
