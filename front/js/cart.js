@@ -1,4 +1,4 @@
-let QteTotal = 0;
+let QteTotal = 0; // variable récupère la qté totale des articles à commander 
 let PrixTotal = 0;
 
 
@@ -7,7 +7,7 @@ let PrixTotal = 0;
 //RECUPERATION DU PANIER DANS LE LOCAL STORAGE
 let panier = localStorage.getItem("panierStorage") ? JSON.parse(localStorage.getItem("panierStorage")) : [];
 
-//Fonction Récupere les données du produit via l'API      
+//Fonction qui récupere les données du produit via l'API      
 function GetProduct(Currentid)
 {                
     return Promise.resolve(
@@ -26,8 +26,7 @@ let cart__items = document.getElementById("cart__items");
 //BOUCLE SUR LE PANIER
 panier.forEach((canap, i) => {
 
-    GetProduct(canap._id).then( ApiCanap => {
-
+    GetProduct(canap._id).then( ApiCanap => {        
         cart__items.innerHTML += `
                 <article class="cart__item" data-id="${canap._id}" data-color="${canap.color}">
                 <div class="cart__item__img">
@@ -52,11 +51,11 @@ panier.forEach((canap, i) => {
                 </div>
             </article>`;
 
-//// Étape 9 : Gérer la modification et la suppression de produits dans la page Panier ////
+            // Étape 9 : Gérer la modification et la suppression de produits dans la page Panier
             
             // console.log(document.querySelectorAll(".deleteItem"))
 
-            // Ajouter Evenement click sur tous les Btn "suppression"
+            // Ajouter Evenement click sur tout les Btn suppression
             document.querySelectorAll(".deleteItem").forEach((delBtn,index) => { 
                 delBtn.addEventListener('click', () => {supprimeCanap(index)})
             });
@@ -65,18 +64,21 @@ panier.forEach((canap, i) => {
             //  Ajouter Evenement change sur tout les input qtés
             document.querySelectorAll(".itemQuantity").forEach((inputBtn,index) => {
                 inputBtn.addEventListener('change', () => changeQty(index, inputBtn.value));    
-                });        
-            });
+                });          
+         
+                //Calcul de la Qté et du prix
+                //QteTotal = QteTotal + Number(canap.quantity);
+                QteTotal += Number(canap.quantity);              
+                PrixTotal +=  canap.quantity * ApiCanap.price ;
+                
+                //Affichage Qte et PRix Total
+               document.getElementById('totalQuantity').innerHTML = QteTotal;
+               document.getElementById('totalPrice').innerHTML = PrixTotal;
+            })
 
-            //Calcul Qté et prix
-            QteTotal = QteTotal + Number(canap.quantity);              
-
-            //Affichage Qté et Prix total
-            document.getElementById('totalQuantity').innerHTML = QteTotal;
-            document.getElementById('totalPrice').innerHTML = PrixTotal;
 });
 
-// fonction : SUPPRIMER 1 PRODUIT DU PANIER
+// fonction : SUPPRIME 1 PRODUIT DU PANIER
  function supprimeCanap(index) {
     if (confirm("êtes vous sûr de cette action !") == true) {
         panier.splice(index, 1);    
@@ -92,3 +94,81 @@ function changeQty(index,newVal) {
         window.location.reload();
    
 }
+
+///// Étape 10 : Passer la commande
+//// GESTION DU FORMULAIRE ////
+/* Envoi du formulaire */
+
+const btnCommander = document.getElementById('order');
+btnCommander.addEventListener('click', function(event) {
+    event.preventDefault(); // retire le comportement par défaut du bouton submit
+    sendOrder();
+})
+
+
+const sendOrder = () => {
+  
+    let form = document.querySelector("form");
+    
+    if ( form.reportValidity() == true ) {
+    
+      let contact = {
+        'firstName': document.getElementById("firstName").value,
+        'lastName': document.getElementById("lastName").value,
+        'address': document.getElementById("address").value,
+        'city': document.getElementById("city").value,
+        'email': document.getElementById("email").value
+      };
+   
+      
+      let products  = [];
+      
+      for ( let i = 0; i < panier.length ; i++){
+        
+        products.push(panier[i]._id)
+    }
+  
+  
+      let formulaireClient = JSON.stringify({
+        contact,
+        products ,
+      });
+  
+      
+  
+      // APPEL API AVEC FETCH // ENVOI DES DONNEES AVEC POST 
+      fetch('http://localhost:3000/api/products/order', {
+        method: 'POST',
+        headers: {
+          'content-type': "application/json"
+        },
+        mode: "cors",
+        body: formulaireClient
+        })
+        .then(function (response) {
+          return response.json()
+        })
+        .then(function (rep) {
+                // console.log(rep.orderId)
+                // localStorage.setItem("contact", JSON.stringify(rep.contact));
+                // localStorage.setItem("produits ", JSON.stringify(rep.products )); 
+
+          window.location.assign("confirmation.html?orderId=" + rep.orderId);
+        })
+        //SI PROBLEME API
+        .catch(function (err) {
+          console.log("fetch Error");
+        });
+    }
+
+    else{
+      if(document.getElementById("email").reportValidity()== false)
+        {
+          document.getElementById('emailErrorMsg').innerHTML=" Email Non Valide !"
+        }
+      else
+        {
+        alert(" Une erreur est survenue votre panier est  peut être vide ou le formulaire n'a pas été correctement rempli!");
+        }
+    };
+  }

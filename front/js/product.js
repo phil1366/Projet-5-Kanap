@@ -1,3 +1,6 @@
+const { log } = require("console");
+const { title } = require("process");
+const { URLSearchParams } = require("url");
 const { response } = require("../../back/app");
 
   
@@ -45,36 +48,35 @@ const displayProduct = (product) => {
               });
           };
       
-      // Créer un nouvel objet URLSearchParams pour récupérer les paramètres de recherche de l'URL actuelle
+      // Créer un nouvel objet URLSearchParams pour récupérer les paramètres de recherche de l'actuel URL
           const searchParams = new URLSearchParams(window.location.search);
 
       // Récupère l'ID de produit à partir des paramètres de recherche
           const productId = searchParams.get("id");    
     
       // Appelle la fonction fetchProduct en passant l'ID de produit récupéré pour récupérer les détails du produit
-      fetchProduct(productId);
+          fetchProduct(productId);
 
    
-      //Étape 7 : Ajouter des produits dans le panier
+      //// ÉTAPE 7 : Ajouter des produits dans le panier ////
 
       // ECOUTE EVENEMENT AU CLICK + FNCT AjouterProdPanier
 
-    document.getElementById('addToCart').addEventListener('click',  function () {AjouterProdPanier()});
+      document.getElementById('addToCart').addEventListener('click',  function () {AjouterProdPanier()});
 
-    const AjouterProdPanier  = () => { //fonction d'ajout du produit dans le panier
+      const AjouterProdPanier  = () => { //fonction d'ajout du produit dans le panier
 
-            // récuperer la qté et la couleur
-          let quantity = parseInt(document.getElementById('quantity').value);// parseInt permet de convertir string en entier
-          
-          let colorSelect = document.getElementById("colors");
-          let color = colorSelect.options[colorSelect.selectedIndex].value;
+      // récuperer la qté et la couleur
+      let quantity = parseInt(document.getElementById('quantity').value);// parseInt permet de convertir string en entier     
+      let colorSelect = document.getElementById("colors");
+      let color = colorSelect.options[colorSelect.selectedIndex].value;
 
-          // créér l'objet nouvel achat
-          let newAchat = {
-              "_id" : productId,
-              "quantity" : quantity,
-              "color" : color,
-          }
+      // créér objet nouvel achat
+      let newAchat = {
+         "_id" : productId,
+         "quantity" : quantity,
+         "color" : color,
+      }
 
 
           //RECUPERER LE PANIER// grace condition ternaire : let variable=(condition)? "valeur si vrai": "valeur si faux"
@@ -106,7 +108,30 @@ const displayProduct = (product) => {
 
       }
 
-        
 
-      
+
+     
+
+
+
+
+
+   
+   
+
+
     
+    
+    
+    
+
+//RECUPERER LE PANIER// grace condition ternaire : let variable=(condition)? "valeur si vrai": "valeur si faux"
+          //let panier = (1==3) ? val1 : val2;
+//gestion de l'ajout selon si le produit exist ou pas sur le panier
+
+          // -> parcourir le panier pour voir si le produit existe
+ // -> selon la resultat : si le produit existe on va modifier la quantité sinon on ajoute une nouvelle ligne sur le panier
+// on change la qté
+// on ajoute une nouvelle ligne
+// mise à jour du local storage
+// redirection vers la page panier
