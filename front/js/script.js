@@ -1,4 +1,4 @@
-let container = document.getElementById("items");
+let container = document.getElementById("items");   // On récupère le conteneur où les produits vont être affichés. c la fonction pour afficher les produits.
 
 function affichage(kanap){
     container.innerHTML += `
@@ -26,3 +26,7 @@ fetch("http://localhost:3000/api/products")
         console.log("fetch Error")
         alert("Veuillez nous excuser : produits indisponible pour le moment")
     });
+
+/*Les fonctions "=>" ont également un comportement différent pour la liaison de "this" et pour la gestion des erreurs. 
+En général, il est préférable d'utiliser des fonctions fléchées lorsque vous n'avez pas besoin de créer un nouveau contexte "this" 
+et lorsque vous n'avez pas besoin de gérer des erreurs de manière spécifique.        //????????
