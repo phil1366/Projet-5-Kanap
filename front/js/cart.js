@@ -1,4 +1,4 @@
-let QteTotal = 0; // variable récupère la qté totale des articles à commander 
+let QteTotal = 0; // variable récupère la qté total des article à commader 
 let PrixTotal = 0;
 
 
@@ -7,7 +7,7 @@ let PrixTotal = 0;
 //RECUPERATION DU PANIER DANS LE LOCAL STORAGE
 let panier = localStorage.getItem("panierStorage") ? JSON.parse(localStorage.getItem("panierStorage")) : [];
 
-//Fonction qui récupere les données du produit via l'API      
+//Fonction Récupere les données du produit via l'API      
 function GetProduct(Currentid)
 {                
     return Promise.resolve(
@@ -55,7 +55,7 @@ panier.forEach((canap, i) => {
             
             // console.log(document.querySelectorAll(".deleteItem"))
 
-            // Ajouter Evenement click sur tout les Btn suppression
+            // Ajouter Evenement clik sur tout les Btn suppression
             document.querySelectorAll(".deleteItem").forEach((delBtn,index) => { 
                 delBtn.addEventListener('click', () => {supprimeCanap(index)})
             });
@@ -66,7 +66,7 @@ panier.forEach((canap, i) => {
                 inputBtn.addEventListener('change', () => changeQty(index, inputBtn.value));    
                 });          
          
-                //Calcul de la Qté et du prix
+                //Calcule Qte et du prix
                 //QteTotal = QteTotal + Number(canap.quantity);
                 QteTotal += Number(canap.quantity);              
                 PrixTotal +=  canap.quantity * ApiCanap.price ;
@@ -78,7 +78,7 @@ panier.forEach((canap, i) => {
 
 });
 
-// fonction : SUPPRIME 1 PRODUIT DU PANIER
+// fonction de SUPPRIMER 1 PRODUIT DU PANIER
  function supprimeCanap(index) {
     if (confirm("êtes vous sûr de cette action !") == true) {
         panier.splice(index, 1);    
@@ -101,7 +101,7 @@ function changeQty(index,newVal) {
 
 const btnCommander = document.getElementById('order');
 btnCommander.addEventListener('click', function(event) {
-    event.preventDefault(); // retire le comportement par défaut du bouton submit
+    event.preventDefault(); // retir le comportement par defaut du bouton submit
     sendOrder();
 })
 
@@ -136,7 +136,7 @@ const sendOrder = () => {
   
       
   
-      // APPEL API AVEC FETCH // ENVOI DES DONNEES AVEC POST 
+      // APEL API AVEC FETCH // ENVOIE DES DONNEES AVEC POST 
       fetch('http://localhost:3000/api/products/order', {
         method: 'POST',
         headers: {
