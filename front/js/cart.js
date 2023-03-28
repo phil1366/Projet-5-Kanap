@@ -101,7 +101,7 @@ function changeQty(index,newVal) {
 
 const btnCommander = document.getElementById('order');
 btnCommander.addEventListener('click', function(event) {
-    event.preventDefault(); // retir le comportement par defaut du bouton submit
+    event.preventDefault(); // retire le comportement par defaut du bouton submit
     sendOrder();
 })
 
@@ -118,22 +118,19 @@ const sendOrder = () => {
         'address': document.getElementById("address").value,
         'city': document.getElementById("city").value,
         'email': document.getElementById("email").value
-      };
-   
+      };   
       
       let products  = [];
       
       for ( let i = 0; i < panier.length ; i++){
         
         products.push(panier[i]._id)
-    }
-  
+    }  
   
       let formulaireClient = JSON.stringify({
         contact,
         products ,
-      });
-  
+      });  
       
   
       // APEL API AVEC FETCH // ENVOIE DES DONNEES AVEC POST 
@@ -155,7 +152,7 @@ const sendOrder = () => {
 
           window.location.assign("confirmation.html?orderId=" + rep.orderId);
         })
-        //SI PROBLEME API
+        // SI PROBLEME API
         .catch(function (err) {
           console.log("fetch Error");
         });
