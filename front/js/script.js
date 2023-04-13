@@ -12,7 +12,7 @@ function affichage(kanap){
             `;
 }
 
-//APPEL API AVEC FETCH
+// APPEL API AVEC FETCH
 fetch("http://localhost:3000/api/products")
     .then(response =>  response.json())  
     .then(function (listeProduct) {       
@@ -21,7 +21,7 @@ fetch("http://localhost:3000/api/products")
         }
     })    
 
-//si erreur    
+// si erreur    
     .catch(function (err) {
         console.log("fetch Error")
         alert("Veuillez nous excuser : produits indisponible pour le moment")
